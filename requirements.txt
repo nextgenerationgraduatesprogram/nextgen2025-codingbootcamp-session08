@@ -1,0 +1,9 @@
+ipykernel
+pandas
+matplotlib
+numpy
+python-dotenv
+mpi4py
+pyarrow
+memory_profiler
+dask
