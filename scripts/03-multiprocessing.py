@@ -69,47 +69,23 @@ if __name__ == "__main__":
     execution_time = timeit.timeit(lambda: job_with_fixed_execution_time(0), number=N)
     print(f"Execution Time: {execution_time/N:.3f} seconds")
 
-
     # define a simple set of inputs to the job
-    inputs = range(1)
+    inputs = range(3)
 
     # number of processes to distribute across
     n_processes = 1
 
     # spawn the processes
     with mp.Pool(processes=n_processes) as pool:
-        # map the inputs to the job across processes
-        """
-        synchronous mapping applies a function to an iterable and blocks until all
-        results are available.
-
-        worker1: 
-        worker2: 
-        worker3: 
-        worker4: 
-        worker5: 
-        worker6: 
-
-        """
-        t = time.perf_counter_ns()
-        outputs = pool.map(
-            job_with_fixed_execution_time, 
-            inputs # has to be an iterable which returns a single item
-        )
-        t = time.perf_counter_ns() - t
-        print(f"{inputs} -> job -> {outputs}")
-        print(f"`map` execution took {t/1e9:.3f} s\n")
-
-
-
-
-
-
-
-
-
-
-
+        # # map the inputs to the job across processes
+        # t = time.perf_counter_ns()
+        # outputs = pool.map(
+        #     job_with_fixed_execution_time, 
+        #     inputs # has to be an iterable which returns a single item
+        # )
+        # t = time.perf_counter_ns() - t
+        # print(f"{inputs} -> job -> {outputs}")
+        # print(f"`map` execution took {t/1e9:.3f} s\n")
 
         # # # map asychronously
         # """
@@ -127,15 +103,23 @@ if __name__ == "__main__":
         # print(f"`map_async` execution took {t/1e9:.3f} s\n")
 
 
-        # # iteratively map asychronously
-        # """
-        # iterative mapping with unordered results as an asynchronous mapping method where the results
-        # are yielded as the job finished but the order may not correspond to the input order
-        # """
+        # iteratively map asychronously
+        """
+        iterative mapping with unordered results as an asynchronous mapping method where the results
+        are yielded as the job finished but the order may not correspond to the input order
+        
+        input 1 (---), 2 (-), 3 (--)
+
+        worker1 ---
+        worker2 ---
+
+        output : 2,1,3
+        
+        """
         # t = time.perf_counter_ns()
         # outputs = pool.imap_unordered(
-        #     job_with_dependent_execution_time,
-        #     inputs # [0.1, 0.2, 0.3, 0.45, 0.1]            
+        #     job_with_fixed_execution_time,
+        #     [0.1, 0.2, 0.3, 0.45, 0.1]            
         # )
         # outputs = [output for output in outputs]
         # t = time.perf_counter_ns() - t
@@ -172,4 +156,3 @@ if __name__ == "__main__":
         # t = time.perf_counter_ns() - t
         # print(f"{inputs} -> job -> {outputs}")
         # print(f"`starmap_async` execution took {t/1e9:.3f} s\n")
-
